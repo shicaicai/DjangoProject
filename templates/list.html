@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-4 col-md-offset-4">
+        <form id="form1" onsubmit="return false" action="#" method="POST" class="form-horizontal">
+
+        <!--此处就是通过后端返回到前端，前端进行展示-->
+
+            <div class="form-group">
+                <label for="id_name">发布会名称:</label>
+                <input type="text" name="name" class="form-control" placeholder="发布会名称" maxlength="128" id="id_name" />
+            </div>
+            <div class="form-group">
+                <label for="id_limit">Limit:</label>
+                <input type="number" name="limit" class="form-control" id="id_limit" />
+            </div>
+            <div class="form-group">
+                <label for="id_status">发布状态:</label>
+                <select name="status" id="id_status">
+                  <option value="1">True</option>
+                  <option value="0">False</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_address">发布会地址:</label>
+                <input type="text" name="address" class="form-control" maxlength="128" id="id_address" />
+            </div>
+            <div class="form-group">
+                <label for="id_start_time">开始日期:</label>
+                <input type="text" name="start_time" id="id_start_time" />
+            </div>
+            <div class="form-group">
+                <label for="id_create_time">创建日期:</label>
+                <input type="text" name="create_time" id="id_create_time" />
+            </div>
+
+            <div align="center">
+             <input  class="btn btn-lg btn-primary" id="save"  type="submit" value="保存发布会" >
+            </div>
+
+            <div id="error"></div>
+        </form>
+    </div>
+</div>
+<!--以下为 Ajax脚本 -->
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+     $("#save").click(function(){
+     $.ajax({
+         url:"/api/add_event/",
+         type: "POST",
+         dataType: "json",
+         data:{"name": $("#id_name").val(),
+               "limit":$("#id_limit").val(),
+               "address": $("#id_address").val(),
+               "start_time": $("#id_start_time").val(),
+               "create_time": $("#id_create_time").val(),
+               "status": $("#id_status").val(),
+         },
+         success: function(data){
+            console.log(data);
+            console.log(data.status);
+            console.log(data.message);
+            $("#error").text(data.message)
+         },
+         error: function(){
+             alert("some error")
+         },
+     });
+     });
+    });
+    </script>
+</body>
+</html>
